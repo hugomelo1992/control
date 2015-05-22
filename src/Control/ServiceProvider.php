@@ -1,4 +1,4 @@
-<?php namespace Hugomelo1992\AccessControl;
+<?php namespace Hugomelo1992\Control;
 
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 
