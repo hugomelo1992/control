@@ -1,6 +1,6 @@
-<?php namespace Hugo\AccessControl;
+<?php namespace Hugomelo1992\AccessControl;
 
-class AccessControl {
+class Control {
 
 	public static function retrieveByCredentials(array $credentials)
 	{

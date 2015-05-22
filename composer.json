@@ -1,6 +1,6 @@
 {
     "name": "hugomelo1992/user-vitrine",
-    "description": "Pacote de testes",
+    "description": "Solucao de autenticacao para vitrine",
     "authors": [ 
         {
             "name": "Hugo Melo",
@@ -8,6 +8,12 @@
         }
     ],
     "require": {
-         "php": ">=5.3.17"
+        "php": ">=5.3.17",
+        "illuminate/support": "~4.2|~5.0"
     }
+    "autoload": {
+        "psr-4": {
+            "Hugomelo1992\\Control\\": "src/Control/"
+        }
+    },
  }
