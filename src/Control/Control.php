@@ -57,7 +57,26 @@ class Control {
 	public static function logout()
 	{
 		$app = app();
-		return $app['auth']->logout();
+		// return $app['auth']->logout();
+
+		$user = $app['auth']->user();
+
+		$session = $app['auth']->getSession();
+
+		$session->forget($app['auth']->getName());
+
+		$events = $app['auth']->getDispatcher();
+
+		if (isset($events))
+		{
+			$events->fire('auth.logout', array($user));
+		}
+
+		$app['auth']->setUser = null;
+
+		return;
+
+		// $this->loggedOut = true;
 	}
 
     /**
