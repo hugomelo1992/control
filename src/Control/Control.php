@@ -4,6 +4,13 @@ class Control {
 	
     public $model;
 
+
+	/**
+	 * Retrieve a user by the given credentials.
+	 *
+	 * @param  array  $credentials
+	 * @return \Illuminate\Auth\UserInterface|null
+	 */
 	public static function retrieveByCredentials(array $credentials)
 	{
 		$query = self::model();
@@ -16,6 +23,13 @@ class Control {
 		return $query->first();
 	}
 
+	/**
+	 * Log a user into the application.
+	 *
+	 * @param  \Illuminate\Auth\UserInterface  $user
+	 * @param  bool  $remember
+	 * @return void
+	 */
 	public static function login($credentials, $remember=false)
 	{
 		$app = app();
@@ -35,6 +49,11 @@ class Control {
 	    return false;
 	}
 
+	/**
+	 * Log the user out of the application.
+	 *
+	 * @return void
+	 */
 	public static function logout()
 	{
 		$app = app();
