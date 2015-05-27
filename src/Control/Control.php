@@ -18,7 +18,7 @@ class Control {
 
         $user = $user->where(function($user) use ($identity) {
             foreach ($identity as $attribute => $value) {
-                $user = $user->orWhere($attribute, '=', $value);
+                if ( ! str_contains($attribute, CAMPO_PASSWORD)) $user = $user->where($attribute, '=', $value);
             }
         });
 
