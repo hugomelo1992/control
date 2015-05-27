@@ -1,27 +1,31 @@
 <?php namespace Hugomelo1992\Control;
 
 class Control {
-	
-    public $model;
 
 
-	/**
-	 * Retrieve a user by the given credentials.
-	 *
-	 * @param  array  $credentials
-	 * @return \Illuminate\Auth\UserInterface|null
-	 */
-	public static function retrieveByCredentials(array $credentials)
-	{
-		$query = self::model();
+    /**
+     * Find a user by one of the fields given as $identity.
+     * If one of the fields in the $identity array matches the user
+     * will be retrieved.
+     *
+     * @param array $identity An array of attributes and values to search for
+     *
+     * @return ConfideUser User object
+     */
+    public static function getUserByIdentity($identity)
+    {
+        $user = self::model();
 
-		foreach ($credentials as $key => $value)
-		{
-			if ( ! str_contains($key, CAMPO_PASSWORD)) $query->where($key, $value);
-		}
+        $user = $user->where(function($user) use ($identity) {
+            foreach ($identity as $attribute => $value) {
+                $user = $user->orWhere($attribute, '=', $value);
+            }
+        });
 
-		return $query->first();
-	}
+        $user = $user->get()->first();
+
+        return $user;
+    }
 
 	/**
 	 * Log a user into the application.
@@ -30,16 +34,16 @@ class Control {
 	 * @param  bool  $remember
 	 * @return void
 	 */
-	public static function login($credentials, $remember=false)
+	public static function login($identity, $remember=false)
 	{
 		$app = app();
 
-		$user = self::retrieveByCredentials($credentials);
+		$user = self::getUserByIdentity($identity);
 
         if ($user) {
 			$password = CAMPO_PASSWORD;
 
-	        if(!$app['hash']->check($credentials[$password], $user->$password)) return false;
+	        if(!$app['hash']->check($identity[$password], $user->$password)) return false;
 
 	        $app['auth']->login($user, $remember);
 
@@ -57,7 +61,6 @@ class Control {
 	public static function logout()
 	{
 		$app = app();
-		// return $app['auth']->logout();
 
 		$user = $app['auth']->user();
 
@@ -88,7 +91,7 @@ class Control {
     {
 		$app = app();
         
-            return $app[$app['config']->get('auth.model')];
+        return $app[$app['config']->get('auth.model')];
 
         throw new \Exception("Wrong model specified in config/auth.php", 639);
     }
